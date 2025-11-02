@@ -141,6 +141,7 @@ REST_FRAMEWORK = {
 	"DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",)
 }
 
+# DRF Spectacular settings
 SPECTACULAR_SETTINGS = {
     "TITLE": "Customic Mockups API",
     "DESCRIPTION": "Endpoints for generating t-shirt mockups asynchronously via Celery and serving results.",

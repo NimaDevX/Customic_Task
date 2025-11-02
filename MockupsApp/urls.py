@@ -2,6 +2,7 @@ from django.urls import path
 from django.http import HttpResponse
 from .views import GenerateMockupsAPIView, TaskStatusAPIView, MockupHistoryListAPIView
 
+# Health check endpoint
 def ping(request):
     return HttpResponse("ok")
 

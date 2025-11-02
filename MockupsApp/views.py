@@ -14,13 +14,16 @@ from .serializers import MockupGenerateSerializer, MockupImageSerializer
 from .tasks import generate_mockups_task
 
 
+# API endpoint for generating mockups
 class GenerateMockupsAPIView(APIView):
     """
     POST /api/v1/mockups/generate/
     body: {text, font?, text_color?, shirt_color?=[white|black|blue|yellow]}
     """
+    # Define permission classes
     permission_classes = [AllowAny]
 
+	# Handle POST request to generate mockups
     def post(self, request):
         serializer = MockupGenerateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -33,12 +36,14 @@ class GenerateMockupsAPIView(APIView):
             status=status.HTTP_202_ACCEPTED
         )
 
+# API endpoint for checking task status
 class TaskStatusAPIView(APIView):
     """
     GET /api/v1/tasks/<task_id>/
     """
     permission_classes = [AllowAny]
     
+	# Handle GET request to check task status
     def get(self, request, task_id):
         result = AsyncResult(task_id)
         payload = {"task_id": task_id, "status": result.status}
@@ -52,6 +57,7 @@ class TaskStatusAPIView(APIView):
 
         return Response(payload, status=200)
 
+# API endpoint for listing mockup history with filtering
 class MockupHistoryListAPIView(generics.ListAPIView):
     """
     GET /api/mockups/?q=<text>&color=<white|black|blue|yellow>&page=&page_size=
@@ -59,6 +65,7 @@ class MockupHistoryListAPIView(generics.ListAPIView):
     serializer_class = MockupImageSerializer
     permission_classes = [IsAuthenticated]
 
+	# Define queryset with filtering based on query parameters
     def get_queryset(self):
         qs = MockupImage.objects.select_related("request").order_by("-created_at")
         q = self.request.query_params.get("q")

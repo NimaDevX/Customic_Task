@@ -13,6 +13,7 @@ DEFAULT_FONT = "Vazirmatn.ttf"
 DEFAULT_TEXT_COLOR = "#000000"
 ALL_SHIRT_COLORS = ("white", "black", "blue", "yellow")
 
+# بارگذاری فونت
 def load_font(font_name: str | None, size: int = 64) -> ImageFont.FreeTypeFont:
 
     name = font_name or DEFAULT_FONT
@@ -23,6 +24,7 @@ def load_font(font_name: str | None, size: int = 64) -> ImageFont.FreeTypeFont:
             path = fallback
     return ImageFont.truetype(str(path), size)
 
+# رندر متن روی تی‌شرت
 def render_text_on_shirt(
     text: str,
     shirt_color: str,
@@ -37,7 +39,7 @@ def render_text_on_shirt(
     y_offset_ratio: float = 0.30,
 ) -> Image.Image:
 
-
+    # بارگذاری تصویر پایه
     base_path = BASE_SHIRTS_DIR / f"{shirt_color}.png"
     if not base_path.exists():
         raise FileNotFoundError(
@@ -55,6 +57,7 @@ def render_text_on_shirt(
     wrapped = text
     font = load_font(font_name, size=size)
 
+# کاهش اندازه فونت تا جاییکه متن در ناحیهٔ مجاز جا شود
     while size >= min_size:
         
         font = load_font(font_name, size=size)
@@ -72,6 +75,7 @@ def render_text_on_shirt(
     x = (W - w) // 2
     y = int(H * y_offset_ratio)
     
+	# رسم متن
     fill_color = text_color or DEFAULT_TEXT_COLOR
 
     draw.multiline_text(
